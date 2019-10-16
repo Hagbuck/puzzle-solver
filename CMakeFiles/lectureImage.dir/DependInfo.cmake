@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/kurai/WorkSpace/Clicker/puzzle-solver/inputReader.cpp" "/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/lectureImage.dir/inputReader.cpp.o"
   "/home/kurai/WorkSpace/Clicker/puzzle-solver/main.cpp" "/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/lectureImage.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")

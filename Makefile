@@ -123,6 +123,33 @@ lectureImage/fast:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/build
 .PHONY : lectureImage/fast
 
+inputReader.o: inputReader.cpp.o
+
+.PHONY : inputReader.o
+
+# target to build an object file
+inputReader.cpp.o:
+	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.o
+.PHONY : inputReader.cpp.o
+
+inputReader.i: inputReader.cpp.i
+
+.PHONY : inputReader.i
+
+# target to preprocess a source file
+inputReader.cpp.i:
+	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.i
+.PHONY : inputReader.cpp.i
+
+inputReader.s: inputReader.cpp.s
+
+.PHONY : inputReader.s
+
+# target to generate assembly for a file
+inputReader.cpp.s:
+	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.s
+.PHONY : inputReader.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... lectureImage"
 	@echo "... edit_cache"
+	@echo "... inputReader.o"
+	@echo "... inputReader.i"
+	@echo "... inputReader.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

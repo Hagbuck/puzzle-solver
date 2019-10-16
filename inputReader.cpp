@@ -9,10 +9,10 @@ std::vector<InputEntry> getEntriesFromFile(std::string path){
 
     std::ifstream file;
     file.open(path, std::ifstream::in);
-    
+
     if(file.is_open()){
         int  fragmentId, x, y;
-        float rotation;
+        double rotation;
         while(file >> fragmentId >> x >> y >> rotation){
             entries.push_back({fragmentId, x, y, rotation});
         }

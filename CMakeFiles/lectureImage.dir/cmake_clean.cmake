@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/lectureImage.dir/main.cpp.o"
+  "CMakeFiles/lectureImage.dir/inputReader.cpp.o"
   "bin/lectureImage.pdb"
   "bin/lectureImage"
 )

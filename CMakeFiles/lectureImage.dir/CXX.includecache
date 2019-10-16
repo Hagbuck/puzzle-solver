@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/kurai/WorkSpace/Clicker/puzzle-solver/inputReader.cpp
+inputReader.hpp
+/home/kurai/WorkSpace/Clicker/puzzle-solver/inputReader.hpp
+
+/home/kurai/WorkSpace/Clicker/puzzle-solver/inputReader.hpp
+vector
+-
+string
+-
+fstream
+-
+
 /home/kurai/WorkSpace/Clicker/puzzle-solver/main.cpp
 opencv2/opencv.hpp
 -
@@ -13,6 +25,8 @@ stdio.h
 -
 iostream
 -
+inputReader.hpp
+/home/kurai/WorkSpace/Clicker/puzzle-solver/inputReader.hpp
 
 /usr/local/include/opencv/cxcore.h
 opencv2/core/core_c.h
