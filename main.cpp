@@ -11,7 +11,7 @@ int main(int argc, char** argv){
 
 	std::vector<InputEntry> entries = getEntriesFromFile("fragments.txt");
 	for(int i = 0; i < entries.size(); ++i){
-		cout << entries[i].toString() << endl;
+		cout << entries[i] << endl;
 	}
 
 	Mat imageIn = imread( argv[1], CV_LOAD_IMAGE_GRAYSCALE );

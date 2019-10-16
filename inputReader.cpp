@@ -20,3 +20,8 @@ std::vector<InputEntry> getEntriesFromFile(std::string path){
 	
 	return entries;
 }
+
+std::ostream& operator<<(std::ostream &out, InputEntry const &entry){
+	out << entry.toString();
+	return out;
+}
