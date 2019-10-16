@@ -23,7 +23,8 @@ int main(int argc, char** argv){
 
 	//Image is open -> 575 640 -54.0116
 	else{
-		fragment.copyTo(grHistogram);
+		fragment.copyTo(grHistogram(Rect(575, 645, grHistogram.cols, grHistogram.rows)));
+		//fragment.copyTo(grHistogram);
 	}
 
 	imshow( "Display window", grHistogram );
