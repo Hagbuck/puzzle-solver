@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <map>
+#include <stdexcept>
 
 struct InputEntry{
     int   fragmentId;
@@ -21,6 +23,7 @@ struct InputEntry{
 };
 
 std::vector<InputEntry> getEntriesFromFile(std::string path);
+std::map<int, InputEntry> getEntriesFromFileAsMap(std::string path);
 
 std::ostream& operator<<(std::ostream &out, InputEntry const &entry);
 
