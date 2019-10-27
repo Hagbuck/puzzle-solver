@@ -23,11 +23,20 @@ include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 
 
 add_executable (lectureImage
+  main.cpp
+  inputReader.cpp
+)
+
+add_executable (evaluateur
   eval.cpp
   inputReader.cpp
 )
 
 
 target_link_libraries (lectureImage
+  ${OpenCV_LIBS}
+)
+
+target_link_libraries (evaluateur
   ${OpenCV_LIBS}
 )
