@@ -1,3 +1,5 @@
 /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/rebuild_cache.dir
-/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/lectureImage.dir
 /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/edit_cache.dir
+/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/solve.dir
+/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/lectureImage.dir
+/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles/evaluateur.dir

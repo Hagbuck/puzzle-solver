@@ -60,13 +60,50 @@ CMAKE_SOURCE_DIR = /home/kurai/WorkSpace/Clicker/puzzle-solver
 CMAKE_BINARY_DIR = /home/kurai/WorkSpace/Clicker/puzzle-solver
 
 #=============================================================================
+# Target rules for target CMakeFiles/solve.dir
+
+# All Build rule for target.
+CMakeFiles/solve.dir/all:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/depend
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles --progress-num=7,8 "Built target solve"
+.PHONY : CMakeFiles/solve.dir/all
+
+# Include target in all.
+all: CMakeFiles/solve.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/solve.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/solve.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles 0
+.PHONY : CMakeFiles/solve.dir/rule
+
+# Convenience name for target.
+solve: CMakeFiles/solve.dir/rule
+
+.PHONY : solve
+
+# clean rule for target.
+CMakeFiles/solve.dir/clean:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/clean
+.PHONY : CMakeFiles/solve.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/solve.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/lectureImage.dir
 
 # All Build rule for target.
 CMakeFiles/lectureImage.dir/all:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/depend
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles --progress-num=1,2,3 "Built target lectureImage"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles --progress-num=4,5,6 "Built target lectureImage"
 .PHONY : CMakeFiles/lectureImage.dir/all
 
 # Include target in all.
@@ -93,6 +130,43 @@ CMakeFiles/lectureImage.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/lectureImage.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/evaluateur.dir
+
+# All Build rule for target.
+CMakeFiles/evaluateur.dir/all:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/depend
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles --progress-num=1,2,3 "Built target evaluateur"
+.PHONY : CMakeFiles/evaluateur.dir/all
+
+# Include target in all.
+all: CMakeFiles/evaluateur.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/evaluateur.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles 3
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/evaluateur.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kurai/WorkSpace/Clicker/puzzle-solver/CMakeFiles 0
+.PHONY : CMakeFiles/evaluateur.dir/rule
+
+# Convenience name for target.
+evaluateur: CMakeFiles/evaluateur.dir/rule
+
+.PHONY : evaluateur
+
+# clean rule for target.
+CMakeFiles/evaluateur.dir/clean:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/clean
+.PHONY : CMakeFiles/evaluateur.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/evaluateur.dir/clean
 
 .PHONY : clean
 

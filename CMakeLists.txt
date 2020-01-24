@@ -32,11 +32,19 @@ add_executable (evaluateur
   inputReader.cpp
 )
 
+add_executable (solve
+  solve.cpp
+)
+
 
 target_link_libraries (lectureImage
   ${OpenCV_LIBS}
 )
 
 target_link_libraries (evaluateur
+  ${OpenCV_LIBS}
+)
+
+target_link_libraries (solve
   ${OpenCV_LIBS}
 )

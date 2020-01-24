@@ -69,8 +69,8 @@ rebuild_cache/fast: rebuild_cache
 
 # Special rule for the target edit_cache
 edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake cache editor..."
+	/usr/bin/cmake-gui -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
 .PHONY : edit_cache
 
 # Special rule for the target edit_cache
@@ -111,6 +111,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named solve
+
+# Build rule for target.
+solve: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 solve
+.PHONY : solve
+
+# fast build rule for target.
+solve/fast:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/build
+.PHONY : solve/fast
+
+#=============================================================================
 # Target rules for targets named lectureImage
 
 # Build rule for target.
@@ -123,6 +136,46 @@ lectureImage/fast:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/build
 .PHONY : lectureImage/fast
 
+#=============================================================================
+# Target rules for targets named evaluateur
+
+# Build rule for target.
+evaluateur: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 evaluateur
+.PHONY : evaluateur
+
+# fast build rule for target.
+evaluateur/fast:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/build
+.PHONY : evaluateur/fast
+
+eval.o: eval.cpp.o
+
+.PHONY : eval.o
+
+# target to build an object file
+eval.cpp.o:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/eval.cpp.o
+.PHONY : eval.cpp.o
+
+eval.i: eval.cpp.i
+
+.PHONY : eval.i
+
+# target to preprocess a source file
+eval.cpp.i:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/eval.cpp.i
+.PHONY : eval.cpp.i
+
+eval.s: eval.cpp.s
+
+.PHONY : eval.s
+
+# target to generate assembly for a file
+eval.cpp.s:
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/eval.cpp.s
+.PHONY : eval.cpp.s
+
 inputReader.o: inputReader.cpp.o
 
 .PHONY : inputReader.o
@@ -130,6 +183,7 @@ inputReader.o: inputReader.cpp.o
 # target to build an object file
 inputReader.cpp.o:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.o
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/inputReader.cpp.o
 .PHONY : inputReader.cpp.o
 
 inputReader.i: inputReader.cpp.i
@@ -139,6 +193,7 @@ inputReader.i: inputReader.cpp.i
 # target to preprocess a source file
 inputReader.cpp.i:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.i
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/inputReader.cpp.i
 .PHONY : inputReader.cpp.i
 
 inputReader.s: inputReader.cpp.s
@@ -148,6 +203,7 @@ inputReader.s: inputReader.cpp.s
 # target to generate assembly for a file
 inputReader.cpp.s:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/inputReader.cpp.s
+	$(MAKE) -f CMakeFiles/evaluateur.dir/build.make CMakeFiles/evaluateur.dir/inputReader.cpp.s
 .PHONY : inputReader.cpp.s
 
 main.o: main.cpp.o
@@ -177,6 +233,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/lectureImage.dir/build.make CMakeFiles/lectureImage.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+solve.o: solve.cpp.o
+
+.PHONY : solve.o
+
+# target to build an object file
+solve.cpp.o:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/solve.cpp.o
+.PHONY : solve.cpp.o
+
+solve.i: solve.cpp.i
+
+.PHONY : solve.i
+
+# target to preprocess a source file
+solve.cpp.i:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/solve.cpp.i
+.PHONY : solve.cpp.i
+
+solve.s: solve.cpp.s
+
+.PHONY : solve.s
+
+# target to generate assembly for a file
+solve.cpp.s:
+	$(MAKE) -f CMakeFiles/solve.dir/build.make CMakeFiles/solve.dir/solve.cpp.s
+.PHONY : solve.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -184,14 +267,22 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... lectureImage"
 	@echo "... edit_cache"
+	@echo "... solve"
+	@echo "... lectureImage"
+	@echo "... evaluateur"
+	@echo "... eval.o"
+	@echo "... eval.i"
+	@echo "... eval.s"
 	@echo "... inputReader.o"
 	@echo "... inputReader.i"
 	@echo "... inputReader.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... solve.o"
+	@echo "... solve.i"
+	@echo "... solve.s"
 .PHONY : help
 
 
