@@ -5,12 +5,13 @@
 using namespace cv;
 using namespace std;
 
-#define RATIO_OPTI_MATCH 2 //3 sinon
+#define RATIO_OPTI_MATCH 2.5 //3 sinon
+#define RATIO_DECT 1000
 
 //Global var
 Mat img_scene;
 
-std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene);
+std::pair< std::vector< DMatch >, std::vector<KeyPoint>  > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene);
 void showMatches(Mat img_object,std::vector<KeyPoint> keypoints_object,Mat img_scene,std::vector<KeyPoint> keypoints_scene,	std::vector< DMatch > good_matches);
 Mat rotateFragment(Mat const &imageSource,double angle);
 
@@ -23,10 +24,10 @@ int main(int argc, char** argv)
 	std::map<std::string, DMatch> mapMatch;
 
 	//On calcul les zone d'intérêt de notre scene
-	Ptr<FeatureDetector> detector = ORB::create();
+	Ptr<FeatureDetector> detector = ORB::create(RATIO_DECT);
 	std::vector<KeyPoint> keypoints_scene;
 	detector->detect(img_scene, keypoints_scene);
-	Ptr<DescriptorExtractor> extractor = ORB::create();
+	Ptr<DescriptorExtractor> extractor = ORB::create(RATIO_DECT);
 	Mat descS;
 	extractor->compute(img_scene, keypoints_scene, descS);
 
@@ -34,17 +35,41 @@ int main(int argc, char** argv)
 
 		string path = "frag_eroded/frag_eroded_"+to_string(i)+".png";
 		Mat this_img = imread(path, CV_LOAD_IMAGE_GRAYSCALE);
-		std::vector< DMatch > this_match = getMatchingPossibility(this_img,descS,keypoints_scene);
 
-		if(this_match.size() > 0){
-			cout << "[MATCH] ~ " << to_string(this_match.size()) << " for " << path << endl;
+		// std::vector< DMatch > this_match = getMatchingPossibility(this_img,descS,keypoints_scene);
+		std::pair< std::vector< DMatch >, std::vector<KeyPoint>  > first_try_match = getMatchingPossibility(this_img,descS,keypoints_scene);
 
-			if(this_match.size() == 1 ){ //save proposition in list
-				mapMatch[path] = this_match[0];
+		std::vector< DMatch > this_match = first_try_match.first;
+		std::vector<KeyPoint> bestKeyPoints = first_try_match.second;
+
+		int maxSizeKeysP = this_match.size();
+		std::vector< DMatch > bestmatch = this_match;
+		Mat bestImageMatch = this_img;
+		int bestRotation = 0 ;
+
+		//Rotation
+		for(int j=5;j<360;j+=5){
+			this_img = rotateFragment(this_img,5);
+
+			std::pair< std::vector< DMatch >, std::vector<KeyPoint>  > return_o = getMatchingPossibility(this_img,descS,keypoints_scene);
+			this_match = return_o.first;
+			std::vector<KeyPoint>  this_keys_point = return_o.second;
+
+			if(this_match.size() > maxSizeKeysP){
+				maxSizeKeysP = this_match.size();
+				bestmatch = this_match;
+				bestImageMatch = this_img;
+				bestKeyPoints = this_keys_point;
+				bestRotation = j;
 			}
-			else{
+		}
 
-			}
+
+
+		if(bestmatch.size() > 0){
+			cout << "[MATCH] ~ " << to_string(bestmatch.size()) << " for " << path << endl;
+			cout << "[INFO] ~ Best rotation : " << to_string(bestRotation) << endl;
+			showMatches(bestImageMatch,bestKeyPoints,img_scene,keypoints_scene,bestmatch);
 		}
 
 	}
@@ -52,13 +77,13 @@ int main(int argc, char** argv)
 }
 
 
-std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene){
+std::pair< std::vector< DMatch >, std::vector<KeyPoint>  > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene){
 	Mat img_object = p_obj;
 
 	// On vérifie que les deux images sont chargées
 	if (!img_object.data || !des_sce.data)
 	{
-		std::vector< DMatch > empty;
+		std::pair< std::vector< DMatch >, std::vector<KeyPoint>  > empty;
 		std::cout << " --(!) Error reading images " << std::endl; return empty;
 	}
 
@@ -77,7 +102,7 @@ std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<K
 	std::vector< DMatch > matches;
 	matcher->match(descriptors_object, des_sce, matches);
 
-	double max_dist = 0; double min_dist = 150;
+	double max_dist = 0; double min_dist = 100;
 
 	//On calcul le max et le min de distance entre les points d'interêts
 	for (int i = 0; i < descriptors_object.rows; i++){
@@ -90,14 +115,14 @@ std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<K
 	std::vector< DMatch > good_matches;
 
 	for (int i = 0; i < descriptors_object.rows; i++){
-		if (matches[i].distance < 2 * min_dist)
+		if (matches[i].distance < RATIO_OPTI_MATCH * min_dist)
 			good_matches.push_back(matches[i]);
 	}
 
 	// if(good_matches.size() > 0 )
 	// 	showMatches(img_object,keypoints_object,img_scene,keypoints_scene,good_matches);
 
-	return good_matches;
+	return {good_matches,keypoints_object};
 }
 
 
@@ -157,6 +182,7 @@ Mat rotateFragment(Mat const &imageSource,double angle){
 	Mat rot_mat = getRotationMatrix2D(scr_center,angle,1.0);
 	Mat dst;
 	warpAffine(imageSource,dst,rot_mat,imageSource.size());
-	cvtColor(dst, dst, CV_BGR2BGRA);
+	// cout << "Test cvtcolor " << endl;
+	// cvtColor(dst, dst, COLOR_BGR2GRAY);
 	return dst;
 }
