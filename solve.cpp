@@ -5,23 +5,36 @@
 using namespace cv;
 using namespace std;
 
+#define RATIO_OPTI_MATCH 2 //3 sinon
 
-std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat p_scene);
+//Global var
+Mat img_scene;
+
+std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene);
 void showMatches(Mat img_object,std::vector<KeyPoint> keypoints_object,Mat img_scene,std::vector<KeyPoint> keypoints_scene,	std::vector< DMatch > good_matches);
+Mat rotateFragment(Mat const &imageSource,double angle);
 
 int main(int argc, char** argv)
 {
-    Mat img_scene = imread("Michelangelo_ThecreationofAdam_1707x775.jpg", CV_LOAD_IMAGE_GRAYSCALE);
+    img_scene = imread("Michelangelo_ThecreationofAdam_1707x775.jpg", CV_LOAD_IMAGE_GRAYSCALE);
 
     if (!img_scene.data){std::cout << " --(!) Error reading images " << std::endl; return -1;}
 
 	std::map<std::string, DMatch> mapMatch;
 
+	//On calcul les zone d'intérêt de notre scene
+	Ptr<FeatureDetector> detector = ORB::create();
+	std::vector<KeyPoint> keypoints_scene;
+	detector->detect(img_scene, keypoints_scene);
+	Ptr<DescriptorExtractor> extractor = ORB::create();
+	Mat descS;
+	extractor->compute(img_scene, keypoints_scene, descS);
+
 	for(int i = 0; i < 327 ; ++i){
 
 		string path = "frag_eroded/frag_eroded_"+to_string(i)+".png";
 		Mat this_img = imread(path, CV_LOAD_IMAGE_GRAYSCALE);
-		std::vector< DMatch > this_match = getMatchingPossibility(this_img,img_scene);
+		std::vector< DMatch > this_match = getMatchingPossibility(this_img,descS,keypoints_scene);
 
 		if(this_match.size() > 0){
 			cout << "[MATCH] ~ " << to_string(this_match.size()) << " for " << path << endl;
@@ -39,60 +52,51 @@ int main(int argc, char** argv)
 }
 
 
-std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat p_scene){
+std::vector< DMatch > getMatchingPossibility(Mat p_obj,Mat des_sce,std::vector<KeyPoint>  keypoints_scene){
 	Mat img_object = p_obj;
-	Mat img_scene = p_scene;
 
-	if (!img_object.data || !img_scene.data)
+	// On vérifie que les deux images sont chargées
+	if (!img_object.data || !des_sce.data)
 	{
 		std::vector< DMatch > empty;
 		std::cout << " --(!) Error reading images " << std::endl; return empty;
 	}
 
-	//-- Step 1: Detect the keypoints using SURF Detector
+	//Utilisation de ORB pour créer un detector dans notre fragment
 	Ptr<FeatureDetector> detector = ORB::create();
-
-	std::vector<KeyPoint> keypoints_object, keypoints_scene;
-
+	std::vector<KeyPoint> keypoints_object;
 	detector->detect(img_object, keypoints_object);
-	detector->detect(img_scene, keypoints_scene);
 
-	//-- Step 2: Calculate descriptors (feature vectors)
+	//Utilisation de ORB pour créer un extractor de notre fragment
 	Ptr<DescriptorExtractor> extractor = ORB::create();
-
-	Mat descriptors_object, descriptors_scene;
-
+	Mat descriptors_object;
 	extractor->compute(img_object, keypoints_object, descriptors_object);
-	extractor->compute(img_scene, keypoints_scene, descriptors_scene);
 
-	//-- Step 3: Matching descriptor vectors using FLANN matcher
+	//Phase de matching entre le fragment et notre image (scene)
 	Ptr<DescriptorMatcher> matcher = DescriptorMatcher::create("BruteForce");
 	std::vector< DMatch > matches;
-	matcher->match(descriptors_object, descriptors_scene, matches);
+	matcher->match(descriptors_object, des_sce, matches);
 
 	double max_dist = 0; double min_dist = 150;
 
-	//-- Quick calculation of max and min distances between keypoints
-	for (int i = 0; i < descriptors_object.rows; i++)
-	{
+	//On calcul le max et le min de distance entre les points d'interêts
+	for (int i = 0; i < descriptors_object.rows; i++){
 		double dist = matches[i].distance;
 		if (dist < min_dist) min_dist = dist;
 		if (dist > max_dist) max_dist = dist;
 	}
 
-	//-- Draw only "good" matches (i.e. whose distance is less than 3*min_dist )
+	//On ne dessine que les matchs où la distance min-max et inférieur à 2*min
 	std::vector< DMatch > good_matches;
 
-	for (int i = 0; i < descriptors_object.rows; i++)
-	{
-		if (matches[i].distance < 3 * min_dist)
-		{
+	for (int i = 0; i < descriptors_object.rows; i++){
+		if (matches[i].distance < 2 * min_dist)
 			good_matches.push_back(matches[i]);
-		}
 	}
 
 	// if(good_matches.size() > 0 )
 	// 	showMatches(img_object,keypoints_object,img_scene,keypoints_scene,good_matches);
+
 	return good_matches;
 }
 
@@ -138,4 +142,21 @@ void showMatches(
 	    //-- Show detected matches
 	    imshow("Good Matches & Object detection", img_matches);
 		waitKey(0);
+}
+
+
+
+
+/**
+* @desc Apply a rotation to an image et return the result image
+* @param &imageSource Image to rotate
+* @param angle Rotation value to apply
+*/
+Mat rotateFragment(Mat const &imageSource,double angle){
+	Point2f scr_center(imageSource.cols/2.0F,imageSource.rows/2.0F);
+	Mat rot_mat = getRotationMatrix2D(scr_center,angle,1.0);
+	Mat dst;
+	warpAffine(imageSource,dst,rot_mat,imageSource.size());
+	cvtColor(dst, dst, CV_BGR2BGRA);
+	return dst;
 }
